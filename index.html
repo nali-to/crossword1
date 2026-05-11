@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Love in Vancouver Crossword</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ffe6f0, #e6f3ff);
+    text-align: center;
+    padding: 20px;
+  }
+
+  h1 { color: #d6336c; }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 36px);
+    gap: 3px;
+  }
+
+  .cell {
+    width: 36px;
+    height: 36px;
+    text-align: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    border: 1px solid #999;
+    background: white;
+  }
+
+  .black {
+    background: #333;
+    border: 1px solid #333;
+  }
+
+  .clues {
+    max-width: 400px;
+    text-align: left;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #d6336c;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #message {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #d6336c;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>💕 Love in Vancouver Crossword 💕</h1>
+<p>Fill in the crossword using love, romantic, and Vancouver words.</p>
+
+<div class="container">
+  <div class="grid" id="grid"></div>
+
+  <div class="clues">
+    <h2>Across</h2>
+    <p><b>1.</b> A city where love can bloom near the mountains.</p>
+    <p><b>3.</b> A sweet word for a romantic partner.</p>
+    <p><b>5.</b> A special outing together.</p>
+    <p><b>7.</b> A famous Vancouver park.</p>
+
+    <h2>Down</h2>
+    <p><b>2.</b> A feeling stronger than like.</p>
+    <p><b>4.</b> Something you give to show affection.</p>
+    <p><b>6.</b> Vancouver is known for this kind of weather.</p>
+    <p><b>8.</b> Something couples hold.</p>
+
+    <button onclick="checkAnswers()">Check Answers</button>
+    <p id="message"></p>
+  </div>
+</div>
+
+<script>
+const answers = [
+  "VANCOUVER",
+  "LOVE",
+  "BABY",
+  "DATE",
+  "STANLEY",
+  "KISS",
+  "RAIN",
+  "HANDS"
+];
+
+const layout = [
+  "###VANCOUVER",
+  "######O#####",
+  "######V#####",
+  "###BABY#####",
+  "######E#####",
+  "##DATE######",
+  "######K#####",
+  "###STANLEY##",
+  "######S#####",
+  "######S#####",
+  "###RAIN#####",
+  "#####HANDS##"
+];
+
+const solution = layout.map(row => row.split(""));
+const grid = document.getElementById("grid");
+
+for (let r = 0; r < solution.length; r++) {
+  for (let c = 0; c < solution[r].length; c++) {
+    const char = solution[r][c];
+    const input = document.createElement("input");
+
+    if (char === "#") {
+      input.className = "cell black";
+      input.disabled = true;
+    } else {
+      input.className = "cell";
+      input.maxLength = 1;
+      input.dataset.answer = char;
+      input.addEventListener("input", () => {
+        input.value = input.value.toUpperCase();
+      });
+    }
+
+    grid.appendChild(input);
+  }
+}
+
+function checkAnswers() {
+  const cells = document.querySelectorAll(".cell:not(.black)");
+  let correct = true;
+
+  cells.forEach(cell => {
+    if (cell.value.toUpperCase() !== cell.dataset.answer) {
+      correct = false;
+      cell.style.background = "#ffd6d6";
+    } else {
+      cell.style.background = "#d6ffd9";
+    }
+  });
+
+  if (correct) {
+    document.getElementById("message").textContent =
+      "You solved it! 💖 Reward: one romantic Vancouver date with me 😘";
+  } else {
+    document.getElementById("message").textContent =
+      "Almost there! Try the red boxes again 💕";
+  }
+}
+</script>
+
+</body>
+</html>
